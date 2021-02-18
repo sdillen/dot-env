@@ -1,0 +1,28 @@
+---
+
+- name: Download kubectl
+  get_url:
+    url: "https://dl.k8s.io/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
+    dest: "/tmp/kubectl"
+
+- name: Register the current kubectl version (if any)
+  command: /usr/local/bin/kubectl version --client --short
+  ignore_errors: true
+  register: current_kubectl_version
+  changed_when: false
+
+- name: Remove old kubectl files
+  become: true
+  file:
+    path: "/usr/local/bin/kubectl"
+    state: absent
+  when: current_kubectl_version.failed or current_kubectl_version.stdout != kubectl_version_target
+
+- name: Install kubectl
+  become: true
+  copy:
+    remote_src: true
+    src:  "/tmp/kubectl"
+    dest: "/usr/local/bin/kubectl"
+    mode: "0755"
+  when: current_kubectl_version.failed or current_kubectl_version.stdout != kubectl_version_target
