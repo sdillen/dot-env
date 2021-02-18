@@ -1,0 +1,4 @@
+---
+
+golang_version: 1.16
+golang_version_target: "go version go{{ golang_version }} linux/amd64"
