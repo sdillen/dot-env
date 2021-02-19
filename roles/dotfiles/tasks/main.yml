@@ -1,0 +1,17 @@
+---
+
+- name: Install default packages
+  become: true
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - git
+      - git-lfs
+      - ssh
+      - iftop
+      - make
+      - unzip
+      - tree
+      - ranger
+      - vim

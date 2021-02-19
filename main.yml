@@ -4,6 +4,7 @@
   connection: local
   become_method: sudo
   roles:
+    - dotfiles
     - golang
     - kubectl
     - helm
