@@ -1,4 +1,3 @@
 ---
 
 kubectl_version: 1.20.3
-kubectl_version_target: "Client Version: v{{ kubectl_version }}"
