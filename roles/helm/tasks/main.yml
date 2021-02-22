@@ -10,21 +10,21 @@
   get_url:
     url: "https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz"
     dest: "/tmp/helm-v{{ helm_version }}-linux-amd64.tar.gz"
-  when: current_helm_version.failed or helm_version is search(current_helm_version.stdout)
+  when: current_helm_version.failed or not current_helm_version.stdout is search(helm_version)
 
 - name: Remove old helm files
   become: true
   file:
     path: "/usr/local/bin/helm"
     state: absent
-  when: current_helm_version.failed or helm_version is search(current_helm_version.stdout)
+  when: current_helm_version.failed or not current_helm_version.stdout is search(helm_version)
 
 - name: Extract helm
   unarchive:
     src: "/tmp/helm-v{{ helm_version }}-linux-amd64.tar.gz"
     dest: "/tmp"
     copy: no
-  when: current_helm_version.failed or helm_version is search(current_helm_version.stdout)
+  when: current_helm_version.failed or not current_helm_version.stdout is search(helm_version)
 
 - name: Install helm
   become: true
@@ -33,4 +33,4 @@
     src:  "/tmp/linux-amd64/helm"
     dest: "/usr/local/bin/helm"
     mode: "0755"
-  when: current_helm_version.failed or helm_version is search(current_helm_version.stdout)
+  when: current_helm_version.failed or not current_helm_version.stdout is search(helm_version)

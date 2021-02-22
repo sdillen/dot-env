@@ -10,14 +10,14 @@
   get_url:
     url: "https://dl.k8s.io/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
     dest: "/tmp/kubectl"
-  when: current_kubectl_version.failed or kubectl_version is search(current_kubectl_version.stdout)
+  when: current_kubectl_version.failed or not current_kubectl_version.stdout is search(kubectl_version)
 
 - name: Remove old kubectl files
   become: true
   file:
     path: "/usr/local/bin/kubectl"
     state: absent
-  when: current_kubectl_version.failed or kubectl_version is search(current_kubectl_version.stdout)
+  when: current_kubectl_version.failed or not current_kubectl_version.stdout is search(kubectl_version)
 
 - name: Install kubectl
   become: true
@@ -26,4 +26,4 @@
     src:  "/tmp/kubectl"
     dest: "/usr/local/bin/kubectl"
     mode: "0755"
-  when: current_kubectl_version.failed or kubectl_version is search(current_kubectl_version.stdout)
+  when: current_kubectl_version.failed or not current_kubectl_version.stdout is search(kubectl_version)
