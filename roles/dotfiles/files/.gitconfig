@@ -1,0 +1,18 @@
+[user]
+	name = Stefan Dillenburg
+	email = stefan.dillenburg@fit.fraunhofer.de
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ca = commit -a
+    aa = add .
+    lg = log --graph --oneline --decorate
+    lgs = log --graph --oneline --stat --decorate
+    mg = merge --no-ff
+    undo = reset --hard
+[core]
+    ui = true
+    editor = vim
+[pull]
+    rebase = true

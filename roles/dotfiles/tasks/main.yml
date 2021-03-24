@@ -15,3 +15,23 @@
       - tree
       - ranger
       - vim
+
+- name: Rollout .profile
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/.profile"
+    dest: "~/.profile"
+
+- name: Rollout .bashrc
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/.bashrc"
+    dest: "~/.bashrc"
+
+- name: Rollout .bash_aliases
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/.bash_aliases"
+    dest: "~/.bash_aliases"
+
+- name: Rollout .gitconfig
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/.gitconfig"
+    dest: "~/.gitconfig"
