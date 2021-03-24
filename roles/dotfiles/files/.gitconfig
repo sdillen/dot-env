@@ -5,7 +5,8 @@
     st = status
     co = checkout
     br = branch
-    ca = commit -a
+    cm = commit -v
+    ca = commit -av
     aa = add .
     lg = log --graph --oneline --decorate
     lgs = log --graph --oneline --stat --decorate
@@ -14,5 +15,18 @@
 [core]
     ui = true
     editor = vim
+[init]
+    defaultBranch = main
 [pull]
     rebase = true
+[diff]
+    tool = vimdiff
+[merge]
+    tool = vimdiff
+[difftool]
+    prompt = false
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+    required = true
