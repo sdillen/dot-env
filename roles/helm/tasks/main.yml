@@ -1,26 +1,26 @@
 ---
 
 - name: Register the current helm version (if any)
-  command: /usr/local/bin/helm version --short
+  ansible.builtin.command: /usr/local/bin/helm version --short
   ignore_errors: true
   register: current_helm_version
   changed_when: false
 
 - name: Download helm
-  get_url:
+  ansible.builtin.get_url:
     url: "https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz"
     dest: "/tmp/helm-v{{ helm_version }}-linux-amd64.tar.gz"
   when: current_helm_version.failed or not current_helm_version.stdout is search(helm_version)
 
 - name: Remove old helm files
   become: true
-  file:
+  ansible.builtin.file:
     path: "/usr/local/bin/helm"
     state: absent
   when: current_helm_version.failed or not current_helm_version.stdout is search(helm_version)
 
 - name: Extract helm
-  unarchive:
+  ansible.builtin.unarchive:
     src: "/tmp/helm-v{{ helm_version }}-linux-amd64.tar.gz"
     dest: "/tmp"
     copy: no
@@ -28,7 +28,7 @@
 
 - name: Install helm
   become: true
-  copy:
+  ansible.builtin.copy:
     remote_src: true
     src:  "/tmp/linux-amd64/helm"
     dest: "/usr/local/bin/helm"

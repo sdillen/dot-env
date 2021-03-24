@@ -1,27 +1,27 @@
 ---
 
 - name: Register the current golang version (if any)
-  command: /usr/local/go/bin/go version
+  ansible.builtin.command: /usr/local/go/bin/go version
   ignore_errors: true
   register: current_golang_version
   changed_when: false
 
 - name: Download golang
-  get_url:
+  ansible.builtin.get_url:
     url: "https://golang.org/dl/go{{ golang_version }}.linux-amd64.tar.gz"
     dest: "/tmp/go{{ golang_version }}.linux-amd64.tar.gz"
   when: current_golang_version.failed or not current_golang_version.stdout is search(golang_version)
 
 - name: Remove old golang files
   become: true
-  file:
+  ansible.builtin.file:
     path: "/usr/local/go"
     state: absent
   when: current_golang_version.failed or not current_golang_version.stdout is search(golang_version)
 
 - name: Extract and install golang
   become: true
-  unarchive:
+  ansible.builtin.unarchive:
     src: "/tmp/go{{ golang_version }}.linux-amd64.tar.gz"
     dest: "/usr/local/"
     copy: no

@@ -1,27 +1,27 @@
 ---
 
 - name: Register the current kubectl version (if any)
-  command: /usr/local/bin/kubectl version --client --short
+  ansible.builtin.command: /usr/local/bin/kubectl version --client --short
   ignore_errors: true
   register: current_kubectl_version
   changed_when: false
 
 - name: Download kubectl
-  get_url:
+  ansible.builtin.get_url:
     url: "https://dl.k8s.io/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
     dest: "/tmp/kubectl"
   when: current_kubectl_version.failed or not current_kubectl_version.stdout is search(kubectl_version)
 
 - name: Remove old kubectl files
   become: true
-  file:
+  ansible.builtin.file:
     path: "/usr/local/bin/kubectl"
     state: absent
   when: current_kubectl_version.failed or not current_kubectl_version.stdout is search(kubectl_version)
 
 - name: Install kubectl
   become: true
-  copy:
+  ansible.builtin.copy:
     remote_src: true
     src:  "/tmp/kubectl"
     dest: "/usr/local/bin/kubectl"
