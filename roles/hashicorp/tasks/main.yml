@@ -1,0 +1,32 @@
+---
+
+- name: Add APT key for hashicorp repository
+  become: true
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: Register release code name
+  ansible.builtin.command: lsb_release -cs
+  register: release_code_name
+
+- name: Register host architecture
+  ansible.builtin.command: dpkg --print-architecture
+  register: host_architecture
+
+- name: Add hashicorp repository into sources list
+  become: true
+  ansible.builtin.apt_repository:
+    repo: deb [arch={{ host_architecture.stdout }}] https://apt.releases.hashicorp.com {{ release_code_name.stdout }} main
+    state: present
+    filename: hashicorp
+
+- name: Install hashicorp tools
+  become: true
+  ansible.builtin.apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - terraform
+      - packer
+      - vault
