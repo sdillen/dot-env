@@ -55,7 +55,7 @@ if [ "$TERM" != "linux" ] && [ -f "$GOBIN/powerline-go" ]; then
 fi
 
 # git get variables
-export GIT_GET_PATH="$WORKSPACE/git"
+export GIT_GET_PATH="$WORKSPACE/codebase"
 export GIT_GET_HOST="github.com"
 
 # kubectl
